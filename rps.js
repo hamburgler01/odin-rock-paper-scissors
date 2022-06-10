@@ -18,9 +18,11 @@ function playRound(playerSelection, computerSelection) {
     if (playerSelection == ROCK     && computerSelection == PAPER    ||
         playerSelection == PAPER    && computerSelection == SCISSORS ||
         playerSelection == SCISSORS && computerSelection == ROCK) {
+            scoreComputer++;
             return "You lose - " + computerSelection + " beats " + playerSelection;
     }
 
+    scorePerson++;
     return "You win - " + playerSelection + " beats " + computerSelection;
 }
 
@@ -61,8 +63,44 @@ function game() {
     }
 }
 
+function buttonClick(e) {
+    let playerSelection = e.target.textContent;
+    if (playerSelection && playerSelection != QUIT) {
+        let result= playRound(playerSelection, computerPlay());
+        document.querySelector('#result').textContent = result;
+
+        document.querySelector('.score #score-person').textContent = scorePerson.toString();
+        document.querySelector('.score #score-computer').textContent = scoreComputer.toString();
+
+        if (scorePerson >= 5 || scoreComputer >= 5) {
+            if (scorePerson >= 5) {
+                document.querySelector('#winner').textContent = "You win";
+            } else {
+                document.querySelector('#winner').textContent = "Computer wins";
+            }
+            scorePerson = 0;
+            scoreComputer = 0;
+
+            document.querySelector('.score #score-person').textContent = scorePerson.toString();
+            document.querySelector('.score #score-computer').textContent = scoreComputer.toString();
+        } else {
+            document.querySelector('#winner').textContent = "No winner yet";
+        }
+    }
+}
+
+let scorePerson = 0;
+let scoreComputer = 0;
+
+buttons = document.querySelectorAll('button');
+buttons.forEach(element => {
+    element.addEventListener('click', buttonClick);
+});
+
+/*
 for (let i = 0; i < 5; ++i) {
     if (!game()) {
         break;
     };
 }
+*/
